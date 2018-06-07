@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const sql = require('mssql');
 
-const port = process.env.PORT || 3005;
 const config = {
   user: 'hoalacxanh',
   password: 'HLX.123456789',
@@ -19,6 +18,9 @@ const config = {
 sql.connect(config).catch(err => debug(err));
 
 const app = express();
+
+const port = process.env.PORT || 3005;
+
 const book = {
   name: 'Rung Na Uy',
   author: 'Koshigawa'
@@ -29,9 +31,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const blogRouter = require('./src/routers/blogRouter')(sql);
+const productRouter = require('./src/routers/productRouter')(sql);
+const orderRouter = require('./src/routers/orderRouter')(sql);
 
 app.use('/blog', blogRouter);
-
+app.use('/product', productRouter);
+app.use('/order', orderRouter);
 app.get('/', (req, res) => {
   res.json(book);
 });

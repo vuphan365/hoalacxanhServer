@@ -60,29 +60,27 @@ function blogController(sql) {
       if (image) {
         transaction.begin(() => {
           request.query(`INSERT INTO dbo.Blog (name, image, content, time)
-          VALUES (N'${name}', ${image},'${content}', GETDATE())`)
-            .then(() => {
-              transaction.commit().then((recordSet) => {
-                res.send(recordSet);
-                resolve(recordSet);
-              }).catch((err) => {
-                res.send(err);
-                reject(err);
-              });
+          VALUES (N'${name}', ${image},N'${content}', GETDATE())`)
+            .then((result) => {
+              transaction.commit();
+              res.send(result);
+              resolve(result);
+            }).catch((err) => {
+              res.send(err);
+              reject(err);
             });
         });
       } else {
         transaction.begin(() => {
           request.query(`INSERT INTO dbo.Blog (name, content, time)
-           VALUES (N'${name}','${content}', GETDATE())`)
-            .then(() => {
-              transaction.commit().then((recordSet) => {
-                res.send(recordSet);
-                resolve(recordSet);
-              }).catch((err) => {
-                res.send(err);
-                reject(err);
-              });
+           VALUES (N'${name}',N'${content}', GETDATE())`)
+            .then((result) => {
+              transaction.commit();
+              res.send(result);
+              resolve(result);
+            }).catch((err) => {
+              res.send(err);
+              reject(err);
             });
         });
       }
@@ -96,30 +94,28 @@ function blogController(sql) {
       const request = new sql.Request(transaction);
       if (image) {
         transaction.begin(() => {
-          request.query(`UPDATE dbo.Blog SET name = N'${name}', image = '${image}',
-           content = '${content}', time= GETDATE() WHERE blogID = ${blogID}`)
-            .then(() => {
-              transaction.commit().then((recordSet) => {
-                res.send(recordSet);
-                resolve(recordSet);
-              }).catch((err) => {
-                res.send(err);
-                reject(err);
-              });
+          request.query(`UPDATE dbo.Blog SET name = N'${name}', image = ${image},
+           content = N'${content}', time= GETDATE() WHERE blogID = ${blogID}`)
+            .then((result) => {
+              transaction.commit();
+              res.send(result);
+              resolve(result);
+            }).catch((err) => {
+              res.send(err);
+              reject(err);
             });
         });
       } else {
         transaction.begin(() => {
           request.query(`UPDATE dbo.Blog SET name = N'${name}',
-          content = '${content}', time= GETDATE() WHERE blogID = ${blogID}`)
-            .then(() => {
-              transaction.commit().then((recordSet) => {
-                res.send(recordSet);
-                resolve(recordSet);
-              }).catch((err) => {
-                res.send(err);
-                reject(err);
-              });
+          content = N'${content}', time= GETDATE() WHERE blogID = ${blogID}`)
+            .then((result) => {
+              transaction.commit();
+              res.send(result);
+              resolve(result);
+            }).catch((err) => {
+              res.send(err);
+              reject(err);
             });
         });
       }
@@ -132,14 +128,13 @@ function blogController(sql) {
       const request = new sql.Request(transaction);
       transaction.begin(() => {
         request.query(`DELETE from dbo.Blog WHERE blogID = ${id}`)
-          .then(() => {
-            transaction.commit().then((recordSet) => {
-              res.send(recordSet);
-              resolve(recordSet);
-            }).catch((err) => {
-              res.send(err);
-              reject(err);
-            });
+          .then((result) => {
+            transaction.commit();
+            res.send(result);
+            resolve(result);
+          }).catch((err) => {
+            res.send(err);
+            reject(err);
           });
       });
     });
