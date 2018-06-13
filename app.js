@@ -4,7 +4,6 @@ const debug = require('debug')('app');
 const bodyParser = require('body-parser');
 const chalk = require('chalk');
 const sql = require('mssql');
-const path = require('path');
 
 const config = {
   user: 'hoalacxanh',
@@ -21,9 +20,6 @@ sql.connect(config).catch(err => debug(err));
 const app = express();
 
 const port = process.env.PORT || 3005;
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-}
 
 const book = {
   name: 'Rung Na Uy',
@@ -37,13 +33,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const blogRouter = require('./src/routers/blogRouter')(sql);
 const productRouter = require('./src/routers/productRouter')(sql);
 const orderRouter = require('./src/routers/orderRouter')(sql);
+const userRouter = require('./src/routers/userRouter')(sql);
+const cartRouter = require('./src/routers/cartRouter')(sql);
+const adminRouter = require('./src/routers/adminRouter')(sql);
 
 app.use('/blog', blogRouter);
 app.use('/product', productRouter);
 app.use('/order', orderRouter);
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+app.use('/user', userRouter);
+app.use('/cart', cartRouter);
+app.use('/admin', adminRouter);
+
 app.get('/', (req, res) => {
   res.json(book);
 });
