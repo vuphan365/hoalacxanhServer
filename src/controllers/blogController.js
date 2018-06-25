@@ -60,7 +60,7 @@ function blogController(sql) {
       if (image) {
         transaction.begin(() => {
           request.query(`INSERT INTO dbo.Blog (name, image, content, time)
-          VALUES (N'${name}', ${image},N'${content}', GETDATE())`)
+          VALUES (N'${name}', '${image}',N'${content}', GETDATE())`)
             .then((result) => {
               transaction.commit();
               res.send(result);
@@ -94,7 +94,7 @@ function blogController(sql) {
       const request = new sql.Request(transaction);
       if (image) {
         transaction.begin(() => {
-          request.query(`UPDATE dbo.Blog SET name = N'${name}', image = ${image},
+          request.query(`UPDATE dbo.Blog SET name = N'${name}', image = '${image}',
            content = N'${content}', time= GETDATE() WHERE blogID = ${blogID}`)
             .then((result) => {
               transaction.commit();

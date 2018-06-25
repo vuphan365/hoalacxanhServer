@@ -66,7 +66,7 @@ function productController(sql) {
       if (image) {
         transaction.begin(() => {
           request.query(`INSERT INTO dbo.Product (name, price, image, content, typeID)
-          VALUES (N'${name}', ${price}, ${image},N'${content}', ${typeID})`)
+          VALUES (N'${name}', ${price}, '${image}',N'${content}', ${typeID})`)
             .then((result) => {
               transaction.commit();
               res.send(result);
@@ -100,7 +100,7 @@ function productController(sql) {
       const request = new sql.Request(transaction);
       if (image) {
         transaction.begin(() => {
-          request.query(`UPDATE dbo.Product SET name = N'${name}', price = ${price}, image = ${image},
+          request.query(`UPDATE dbo.Product SET name = N'${name}', price = ${price}, image = '${image}',
            content = N'${content}', typeID = ${typeID} WHERE productID = ${productID}`)
             .then((result) => {
               transaction.commit();
