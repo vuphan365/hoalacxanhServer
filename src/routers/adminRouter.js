@@ -41,7 +41,8 @@ function router(sql) {
         } else {
           debug('Unexist');
           const msg = 'Sai tên đăng nhập hoặc mật khẩu';
-          res.json(msg);
+          const error = { msg };
+          res.json(error);
         }
       });
     });
