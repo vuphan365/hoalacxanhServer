@@ -35,6 +35,7 @@ function router(sql) {
       const admin = { username, password };
       debug(admin);
       isAdminExist(admin).then((result) => {
+        debug('result', result);
         if (result) {
           debug('Exist');
           signIn(res, req, admin);

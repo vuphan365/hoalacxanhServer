@@ -137,8 +137,9 @@ function adminController(sql) {
       const request = new sql.Request();
       request.query(`SELECT username, password FROM dbo.AdminWebsite WHERE
          username = '${username}' AND password = '${password}'`).then((result) => {
-        const adminResult = result.recordset;
-        if (adminResult.username !== null) {
+        const adminResult = result.recordset[0];
+        debug(adminResult.username);
+        if (typeof adminResult.username !== 'undefined') {
           resolve(true);
         } else {
           resolve(false);
