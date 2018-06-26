@@ -135,14 +135,16 @@ function adminController(sql) {
     return new Promise((resolve) => {
       const { username, password } = admin;
       const request = new sql.Request();
-      request.query(`SELECT username, password FROM dbo.AdminWebsite WHERE
+      request.query(`SELECT username, image, adminID FROM dbo.AdminWebsite WHERE
          username = '${username}' AND password = '${password}'`).then((result) => {
         const adminResult = result.recordset[0];
         debug(adminResult.username);
         if (typeof adminResult.username !== 'undefined') {
-          resolve(true);
+          const isExist = true;
+          resolve({ isExist, adminResult });
         } else {
-          resolve(false);
+          const isExist = false;
+          resolve({ isExist });
         }
       }).catch(() => resolve(false));
     });

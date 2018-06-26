@@ -36,9 +36,12 @@ function router(sql) {
       debug(admin);
       isAdminExist(admin).then((result) => {
         debug('result', result);
-        if (result) {
+        if (result.isExist) {
+          const { image, adminID } = result.adminResult;
+          const user = { image, username, adminID };
+          debug(user);
           debug('Exist');
-          signIn(res, req, admin);
+          signIn(res, req, user);
         } else {
           debug('Unexist');
           const msg = 'Sai tên đăng nhập hoặc mật khẩu';

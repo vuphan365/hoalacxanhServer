@@ -7,7 +7,7 @@ function jsontoken() {
     jwt.sign({ user }, key, (err, token) => {
       debug(token);
       const msg = 'Đăng nhập thành công';
-      res.json({ token, msg });
+      res.json({ token, msg, user });
     });
   }
   function getToken(req) {
