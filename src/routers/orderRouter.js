@@ -36,7 +36,7 @@ function router(sql) {
       validateToken(req, res, next, isUserExist);
     })
     .post(addOrder);
-  orderRouter.route('/edit/')
+  orderRouter.route('/edit')
     .all((req, res, next) => {
       validateToken(req, res, next, isUserExist);
     })

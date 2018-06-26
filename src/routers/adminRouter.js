@@ -40,7 +40,8 @@ function router(sql) {
           signIn(res, req, admin);
         } else {
           debug('Unexist');
-          res.sendStatus(403);
+          const msg = 'Sai tên đăng nhập hoặc mật khẩu';
+          res.json(msg);
         }
       });
     });
