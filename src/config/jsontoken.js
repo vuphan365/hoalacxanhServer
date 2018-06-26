@@ -6,7 +6,8 @@ function jsontoken() {
   function signIn(res, req, user) {
     jwt.sign({ user }, key, (err, token) => {
       debug(token);
-      res.json(token);
+      const msg = "Đăng nhập thành công";
+      res.json({token, msg});
     });
   }
   function getToken(req) {
