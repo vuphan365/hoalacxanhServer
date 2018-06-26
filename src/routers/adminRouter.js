@@ -42,7 +42,7 @@ function router(sql) {
         } else {
           debug('Unexist');
           const msg = 'Sai tên đăng nhập hoặc mật khẩu';
-          const error = { msg };
+          const error = { msg, username, password };
           res.json(error);
         }
       });
