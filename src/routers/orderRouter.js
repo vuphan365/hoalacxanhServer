@@ -14,15 +14,17 @@ function router(sql) {
   const { validateToken } = jsontoken();
   const { isUserExist } = userController(sql);
   orderRouter.route('/detail')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getDetailAllOrders);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getDetailAllOrders(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   orderRouter.route('/user')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .get(getDetailAllOrdersByUser);
+    .get((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getDetailAllOrdersByUser(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   orderRouter.route('/detail/:id')
     .get(getDetailOrderById);
   orderRouter.route('/view')
@@ -32,20 +34,23 @@ function router(sql) {
   orderRouter.route('/view/:id/items')
     .get(getItemsOfOrderById);
   orderRouter.route('/add')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(addOrder);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        addOrder(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   orderRouter.route('/edit')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(editOrder);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        editOrder(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   orderRouter.route('/delete')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(deleteOrder);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        deleteOrder(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   return orderRouter;
 }
 

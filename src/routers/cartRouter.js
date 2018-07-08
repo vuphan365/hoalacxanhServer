@@ -20,25 +20,30 @@ function router(sql) {
   cartRouter.route('/view/:id')
     .get(getViewCartByUserID);
   cartRouter.route('/add')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(addCart);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        addCart(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   cartRouter.route('/get')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(getDetailCartByUserIDAndProductID);
+    .get((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getDetailCartByUserIDAndProductID(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
+
   cartRouter.route('/edit')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(editCart);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        editCart(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   cartRouter.route('/delete')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(deleteCartByUserIDAndProductID);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        deleteCartByUserIDAndProductID(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   return cartRouter;
 }
 module.exports = router;

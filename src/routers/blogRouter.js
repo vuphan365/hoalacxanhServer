@@ -22,20 +22,23 @@ function router(sql) {
   blogRouter.route('/view/:id/content')
     .get(getContentBlogById);
   blogRouter.route('/add')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(addBlog);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        addBlog(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   blogRouter.route('/edit/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(editBlog);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        editBlog(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   blogRouter.route('/delete/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(deleteBlogById);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        deleteBlogById(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   return blogRouter;
 }
 

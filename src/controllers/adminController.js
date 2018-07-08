@@ -21,13 +21,14 @@ function adminController(sql) {
   }
   function getDetailAdmin(req, res) {
     return new Promise((resolve, reject) => {
+      debug(req.headers);
       getToken(req).then((token) => {
         verifyToken(token).then((user) => {
           const { username } = user;
           const request = new sql.Request();
           request.query(`SELECT username, image FROM dbo.AdminWebsite WHERE
             username = '${username}'`).then((result) => {
-            const adminResult = result.recordset;
+            const adminResult = result.recordset[0];
             debug(adminResult);
             res.send(adminResult);
             resolve(adminResult);
@@ -46,7 +47,7 @@ function adminController(sql) {
           isUsernameNotExist(username).then(() => {
             if (image) {
               transaction.begin(() => {
-                request.query(`INSERT INTO dbo.AdminWebsite ( username, password, image ) 
+                request.query(`INSERT INTO dbo.AdminWebsite ( username, password, image )
                 VALUES ('${username}', '${password}', '${image}')`)
                   .then((result) => {
                     transaction.commit();
@@ -59,7 +60,7 @@ function adminController(sql) {
               });
             } else {
               transaction.begin(() => {
-                request.query(`INSERT INTO dbo.AdminWebsite ( username, password ) 
+                request.query(`INSERT INTO dbo.AdminWebsite ( username, password )
                 VALUES ('${username}', '${password}')`)
                   .then((result) => {
                     transaction.commit();
@@ -90,7 +91,7 @@ function adminController(sql) {
             const transaction = new sql.Transaction();
             const request = new sql.Request(transaction);
             transaction.begin(() => {
-              request.query(`UPDATE dbo.AdminWebsite SET password = '${newPassword}' WHERE 
+              request.query(`UPDATE dbo.AdminWebsite SET password = '${newPassword}' WHERE
               username= '${username}' AND password = '${password}'`)
                 .then((result) => {
                   transaction.commit();
@@ -133,12 +134,14 @@ function adminController(sql) {
   }
   function isAdminExist(admin) {
     return new Promise((resolve) => {
-      const { username, password } = admin;
+      const { username } = admin;
+      debug(username);
       const request = new sql.Request();
-      request.query(`SELECT username, image, adminID FROM dbo.AdminWebsite WHERE
-         username = '${username}' AND password = '${password}'`).then((result) => {
+      request.query(`SELECT username FROM dbo.AdminWebsite WHERE
+         username = '${username}'`).then((result) => {
+        debug(result);
         const adminResult = result.recordset[0];
-        debug(adminResult.username);
+        debug(adminResult);
         if (typeof adminResult.username !== 'undefined') {
           const isExist = true;
           resolve({ isExist, adminResult });

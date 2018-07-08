@@ -7,38 +7,44 @@ const adminController = require('../controllers/adminController');
 
 function router(sql) {
   const { addAdmin, changePassword, updateImage, isAdminExist, getDetailAdmin }
-  = adminController(sql);
+    = adminController(sql);
   const { signIn, validateToken } = jsontoken();
   adminRouter.route('/me')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getDetailAdmin);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getDetailAdmin(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   adminRouter.route('/add')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(addAdmin);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        addAdmin(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   adminRouter.route('/changepassword')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(changePassword);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        changePassword(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   adminRouter.route('/updateimage')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(updateImage);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        updateImage(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   adminRouter.route('/signin')
     .post((req, res) => {
+      debug(req.headers);
       const { username, password } = req.body;
       const admin = { username, password };
       debug(admin);
       isAdminExist(admin).then((result) => {
         debug('result', result);
+        const user = { username };
         if (result.isExist) {
           debug('Exist');
-          signIn(res, req, admin);
+          signIn(res, req, user);
         } else {
           debug('Unexist');
           const msg = 'Sai tên đăng nhập hoặc mật khẩu';

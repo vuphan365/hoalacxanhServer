@@ -1,10 +1,10 @@
 
+const debug = require('debug')('app:productController');
 function productController(sql) {
   function getDetailAllProducts(req, res) {
     return new Promise((resolve, reject) => {
       const request = new sql.Request();
-      request.query('SELECT productID, name, price, image, content, typeName FROM dbo.Product'
-      + ' INNER JOIN dbo.TypeProduct ON TypeProduct.typeID = Product.typeID').then((result) => {
+      request.query('SELECT productID, name, price, image, content, typeID FROM dbo.Product').then((result) => {
         const products = result.recordset;
         res.json(products);
         resolve(products);
@@ -14,8 +14,7 @@ function productController(sql) {
   function getViewAllProducts(req, res) {
     return new Promise((resolve, reject) => {
       const request = new sql.Request();
-      request.query('SELECT productID, name, price, image, typeName FROM dbo.Product'
-      + ' INNER JOIN dbo.TypeProduct ON TypeProduct.typeID = Product.typeID').then((result) => {
+      request.query('SELECT productID, name, price, image, typeID FROM dbo.Product').then((result) => {
         const products = result.recordset;
         res.json(products);
         resolve(products);
@@ -26,8 +25,7 @@ function productController(sql) {
     return new Promise((resolve, reject) => {
       const { id } = req.params;
       const request = new sql.Request();
-      request.query(`SELECT productID, name, price, image, content, typeName FROM dbo.Product 
-      INNER JOIN dbo.TypeProduct ON TypeProduct.typeID = Product.typeID WHERE productID=${id}`).then((result) => {
+      request.query(`SELECT productID, name, price, image, content, typeID FROM dbo.Product WHERE productID=${id}`).then((result) => {
         const product = result.recordset;
         res.json(product);
         resolve(product);
@@ -38,8 +36,7 @@ function productController(sql) {
     return new Promise((resolve, reject) => {
       const { id } = req.params;
       const request = new sql.Request();
-      request.query(`SELECT productID, name, price, image, typeName FROM dbo.Product 
-      INNER JOIN dbo.TypeProduct ON TypeProduct.typeID = Product.typeID WHERE productID=${id}`).then((result) => {
+      request.query(`SELECT productID, name, price, image, typeID FROM dbo.Product WHERE productID=${id}`).then((result) => {
         const product = result.recordset;
         res.json(product);
         resolve(product);
@@ -50,8 +47,7 @@ function productController(sql) {
     return new Promise((resolve, reject) => {
       const { id } = req.params;
       const request = new sql.Request();
-      request.query(`SELECT content FROM dbo.Product INNER JOIN dbo.TypeProduct
-      ON TypeProduct.typeID = Product.typeID WHERE productID=${id}`).then((result) => {
+      request.query(`SELECT content FROM dbo.Product typeID FROM dbo.Product WHERE productID=${id}`).then((result) => {
         const product = result.recordset;
         res.json(product);
         resolve(product);
@@ -94,6 +90,7 @@ function productController(sql) {
   }
   function editProduct(req, res) {
     return new Promise((resolve, reject) => {
+      debug(req.params.id);
       const productID = req.params.id;
       const { name, price, image, content, typeID } = req.body;
       const transaction = new sql.Transaction();

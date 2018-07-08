@@ -22,20 +22,23 @@ function router(sql) {
   productRouter.route('/view/:id/content')
     .get(getContentProductById);
   productRouter.route('/add')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(addProduct);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        addProduct(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   productRouter.route('/edit/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .post(editProduct);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        editProduct(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   productRouter.route('/delete/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(deleteProductById);
+    .post((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        deleteProductById(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   return productRouter;
 }
 

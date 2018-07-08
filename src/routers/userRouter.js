@@ -14,47 +14,55 @@ function router(sql) {
   const { signIn, validateToken } = jsontoken();
 
   userRouter.route('/detail')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getDetailAllUsers);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getDetailAllUsers(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/detail/me')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .get(getDetailUser);
+    .get((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getDetailUser(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/detail/get/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getDetailUserById);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getDetailUserById(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/view')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getViewAllUsers);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getViewAllUsers(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/view/me')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .get(getViewUser);
+    .get((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getViewUser(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/email')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(getDetailUserByEmail);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getDetailUserByEmail(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/view/get/:id')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isAdminExist);
-    })
-    .get(getViewUserById);
+    .get((req, res) => {
+      validateToken(req, res, isAdminExist).then(() => {
+        getViewUserById(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/add')
     .post(addUser);
   userRouter.route('/edit')
-    .all((req, res, next) => {
-      validateToken(req, res, next, isUserExist);
-    })
-    .post(editUser);
+    .post((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        editUser(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   userRouter.route('/signin')
     .post((req, res) => {
       const { name, email } = req.body;
