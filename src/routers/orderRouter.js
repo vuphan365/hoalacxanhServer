@@ -43,25 +43,21 @@ function router(sql) {
     .post((req, res) => {
       validateToken(req, res, isUserExist).then(() => {
         editOrder(req, res);
-      }).catch(() => res.sendStatus(403));
-    });
-  orderRouter.route('/edit')
-    .post((req, res) => {
-      validateToken(req, res, isAdminExist).then(() => {
-        editOrder(req, res);
-      }).catch(() => res.sendStatus(403));
+      }).catch(() => {
+        validateToken(req, res, isAdminExist).then(() => {
+          editOrder(req, res);
+        }).catch(() => res.sendStatus(403));
+      });
     });
   orderRouter.route('/delete')
     .post((req, res) => {
       validateToken(req, res, isUserExist).then(() => {
         deleteOrder(req, res);
-      }).catch(() => res.sendStatus(403));
-    });
-  orderRouter.route('/delete')
-    .post((req, res) => {
-      validateToken(req, res, isAdminExist).then(() => {
-        deleteOrder(req, res);
-      }).catch(() => res.sendStatus(403));
+      }).catch(() => {
+        validateToken(req, res, isAdminExist).then(() => {
+          deleteOrder(req, res);
+        }).catch(() => res.sendStatus(403));
+      });
     });
   return orderRouter;
 }

@@ -45,18 +45,18 @@ function jsontoken() {
                 debug(result);
                 resolve(result);
               } else {
-                reject(false);
+                reject();
               }
             });
           } else {
-            reject(false);
+            reject();
           }
         }, () => {
-          reject(false);
+          reject();
+        });
       });
     });
-  });
-}
+  }
 
   return {
     signIn,
