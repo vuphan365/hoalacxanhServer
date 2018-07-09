@@ -7,7 +7,7 @@ function orderController(sql) {
   function getDetailAllOrders(req, res) {
     return new Promise((resolve, reject) => {
       const request = new sql.Request();
-      request.query('SELECT OrderHistory.orderID, Product.name, Product.price, quantity, UserWebsite.name as username, address, phone,'
+      request.query('SELECT OrderHistory.orderID, OrderHistory.userID, Product.name, Product.price, quantity, UserWebsite.name as username, address, phone,'
         + ' statusName FROM dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID'
         + ' INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID INNER JOIN '
         + ' dbo.OrderItemHistory ON OrderItemHistory.orderID = OrderHistory.orderID'
@@ -21,7 +21,7 @@ function orderController(sql) {
   function getViewAllOrders(req, res) {
     return new Promise((resolve, reject) => {
       const request = new sql.Request();
-      request.query('SELECT OrderHistory.orderID, UserWebsite.name as username, address, phone, statusName FROM'
+      request.query('SELECT OrderHistory.orderID, OrderHistory.userID, UserWebsite.name as username, address, phone, statusName FROM'
         + ' dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID'
         + ' INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID').then((result) => {
         const orders = result.recordset;
@@ -34,7 +34,7 @@ function orderController(sql) {
     return new Promise((resolve, reject) => {
       const { id } = req.params;
       const request = new sql.Request();
-      request.query(`SELECT OrderHistory.orderID, Product.name,Product.price, quantity, UserWebsite.name as username, address, phone,
+      request.query(`SELECT OrderHistory.orderID, OrderHistory.userID, Product.name,Product.price, quantity, UserWebsite.name as username, address, phone,
       statusName FROM dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID 
       INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID INNER JOIN 
       dbo.OrderItemHistory ON OrderItemHistory.orderID = OrderHistory.orderID INNER JOIN dbo.Product
@@ -49,7 +49,7 @@ function orderController(sql) {
     return new Promise((resolve, reject) => {
       const { id } = req.params;
       const request = new sql.Request();
-      request.query(`SELECT OrderHistory.orderID, UserWebsite.name as username, address, phone, statusName FROM 
+      request.query(`SELECT OrderHistory.orderID, OrderHistory.userID, UserWebsite.name as username, address, phone, statusName FROM 
       dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID 
       INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID 
       WHERE OrderHistory.orderID =${id}`).then((result) => {
@@ -78,7 +78,7 @@ function orderController(sql) {
         verifyToken(token).then((user) => {
           const request = new sql.Request();
           const { email } = user;
-          request.query(`SELECT OrderHistory.orderID, Product.name, quantity, time,
+          request.query(`SELECT OrderHistory.orderID, OrderHistory.userID, Product.name, quantity, time,
           statusName FROM dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID
           INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID INNER JOIN
           dbo.OrderItemHistory ON OrderItemHistory.orderID = OrderHistory.orderID
