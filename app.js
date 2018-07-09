@@ -37,6 +37,7 @@ const userRouter = require('./src/routers/userRouter')(sql);
 const cartRouter = require('./src/routers/cartRouter')(sql);
 const adminRouter = require('./src/routers/adminRouter')(sql);
 const productTypeRouter = require('./src/routers/productTypeRouter')(sql);
+const statusOrderRouter = require('./src/routers/statusOrderRouter')(sql);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -52,6 +53,7 @@ app.use('/user', userRouter);
 app.use('/cart', cartRouter);
 app.use('/admin', adminRouter);
 app.use('/type', productTypeRouter);
+app.use('/status', statusOrderRouter);
 app.get('/', (req, res) => {
   res.json(book);
 });
