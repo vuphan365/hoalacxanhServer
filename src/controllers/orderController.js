@@ -8,7 +8,7 @@ function orderController(sql) {
     return new Promise((resolve, reject) => {
       const request = new sql.Request();
       request.query('SELECT OrderHistory.orderID, OrderHistory.time, OrderHistory.userID, Product.productID, '
-        + ' Product.name, Product.price, quantity, UserWebsite.name as username, address, phone, OrderHistory.statusID'
+        + ' Product.name, Product.price, quantity, UserWebsite.name as username, address, phone, OrderHistory.statusID, '
         + ' statusName FROM dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID'
         + ' INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID INNER JOIN '
         + ' dbo.OrderItemHistory ON OrderItemHistory.orderID = OrderHistory.orderID'
