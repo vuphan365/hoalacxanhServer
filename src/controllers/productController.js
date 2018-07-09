@@ -1,5 +1,6 @@
 
 const debug = require('debug')('app:productController');
+
 function productController(sql) {
   function getDetailAllProducts(req, res) {
     return new Promise((resolve, reject) => {
@@ -75,7 +76,7 @@ function productController(sql) {
       } else {
         transaction.begin(() => {
           request.query(`INSERT INTO dbo.Product (name, price, content, typeID)
-          VALUES (N'${name}', ${price}, N'${content}', ${typeID})`)
+          VALUES (N'${name}', ${price}, N'${content}', ${typeID}) OUTPUT INSERTED.productID`)
             .then((result) => {
               transaction.commit();
               res.send(result);
