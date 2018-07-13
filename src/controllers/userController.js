@@ -77,6 +77,7 @@ function userController(sql) {
           const request = new sql.Request();
           request.query(`SELECT userID, name, email, address, phone FROM dbo.UserWebsite WHERE email ='${email}'`).then((result) => {
             const userResult = result.recordset;
+            debug(result);
             res.json(userResult);
             resolve(userResult);
           }).catch(error => reject(error));

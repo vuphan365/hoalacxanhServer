@@ -82,7 +82,7 @@ function orderController(sql) {
         verifyToken(token).then((user) => {
           const request = new sql.Request();
           const { email } = user;
-          request.query(`SELECT OrderHistory.orderID, OrderHistory.time, OrderHistory.userID, OrderHistory.statusID, Product.productID, Product.name, quantity, time,
+          request.query(`SELECT OrderHistory.orderID, OrderHistory.time, OrderHistory.userID, Product.price, OrderHistory.statusID, Product.productID, Product.name, quantity, time,
           statusName FROM dbo.OrderHistory INNER JOIN dbo.UserWebsite ON UserWebsite.userID = OrderHistory.userID
           INNER JOIN dbo.StatusOrder ON StatusOrder.statusID = OrderHistory.statusID INNER JOIN
           dbo.OrderItemHistory ON OrderItemHistory.orderID = OrderHistory.orderID
