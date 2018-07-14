@@ -58,7 +58,7 @@ function cartController(sql) {
           const { email } = user;
           const request = new sql.Request();
           request.query(`SELECT dbo.UserWebsite.userID, dbo.UserWebsite.name AS userName, 
-          dbo.Product.productID, price, dbo.Product.name AS productName, quantity
+          dbo.Product.productID, price,dbo.Product.image, dbo.Product.name AS productName, quantity
           FROM dbo.Cart INNER JOIN dbo.Product ON Product.productID = Cart.productID
           INNER JOIN dbo.UserWebsite ON UserWebsite.userID = Cart.userID where dbo.UserWebsite.email ='${email}'`).then((result) => {
             const cart = result.recordset;
