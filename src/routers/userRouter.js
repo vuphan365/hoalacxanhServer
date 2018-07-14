@@ -39,9 +39,7 @@ function router(sql) {
     });
   userRouter.route('/view/me')
     .get((req, res) => {
-      debug(req.headers);
       validateToken(req, res, isUserExist).then(() => {
-        debug('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
         getViewUser(req, res);
       }).catch(() => res.sendStatus(403));
     });

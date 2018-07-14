@@ -7,7 +7,7 @@ const jsontoken = require('../config/jsontoken');
 
 function router(sql) {
   const { getDetailAllCarts, getViewAllCarts, getDetailCartByUserID, getViewCartByUserID, addCart,
-    getDetailCartByUserIDAndProductID, editCart, deleteCartByUserIDAndProductID }
+    getDetailCartByUserIDAndProductID, editCart, deleteCartByUserIDAndProductID, getViewCartOfUser }
     = cartController(sql);
   const { validateToken } = jsontoken();
   const { isUserExist } = userController(sql);
@@ -19,6 +19,12 @@ function router(sql) {
     .get(getViewAllCarts);
   cartRouter.route('/view/:id')
     .get(getViewCartByUserID);
+  cartRouter.route('/me')
+    .get((req, res) => {
+      validateToken(req, res, isUserExist).then(() => {
+        getViewCartOfUser(req, res);
+      }).catch(() => res.sendStatus(403));
+    });
   cartRouter.route('/add')
     .post((req, res) => {
       validateToken(req, res, isUserExist).then(() => {

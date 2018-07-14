@@ -1,3 +1,7 @@
+const jsontoken = require('../config/jsontoken');
+
+const { getToken, verifyToken } = jsontoken();
+
 function cartController(sql) {
   function getDetailAllCarts(req, res) {
     return new Promise((resolve, reject) => {
@@ -45,6 +49,24 @@ function cartController(sql) {
         res.json(cart);
         resolve(cart);
       }).catch(error => reject(error));
+    });
+  }
+  function getViewCartOfUser(req, res) {
+    return new Promise((resolve, reject) => {
+      getToken(req).then((token) => {
+        verifyToken(token).then((user) => {
+          const { email } = user;
+          const request = new sql.Request();
+          request.query(`SELECT dbo.UserWebsite.userID, dbo.UserWebsite.name AS userName, 
+          dbo.Product.productID, price, dbo.Product.name AS productName, quantity
+          FROM dbo.Cart INNER JOIN dbo.Product ON Product.productID = Cart.productID
+          INNER JOIN dbo.UserWebsite ON UserWebsite.userID = Cart.userID where dbo.UserWebsite.email ='${email}'`).then((result) => {
+            const cart = result.recordset;
+            res.json(cart);
+            resolve(cart);
+          }).catch(error => reject(error));
+        }, () => { res.sendStatus(403); });
+      }, () => { res.sendStatus(403); });
     });
   }
   function getDetailCartByUserIDAndProductID(req, res) {
@@ -126,6 +148,7 @@ function cartController(sql) {
     getDetailCartByUserIDAndProductID,
     addCart,
     editCart,
+    getViewCartOfUser,
     deleteCartByUserIDAndProductID
   };
 }
